@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventario físico | CapTax-A</title>
+<style>
+:root{font-family:Inter,Arial,Helvetica,sans-serif;color:#202a36;background:#f4f7f5;--brand:#064e3b;--brand2:#059669;--accent:#10b981;--line:#d6e3dc}
+*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(115deg,#050807,#064e3b);color:white;padding:22px 16px;border-bottom:4px solid var(--accent);box-shadow:0 3px 14px #052e1b20}
+.brandbar{max-width:1100px;margin:auto;display:flex;align-items:center;gap:14px}.brandmark{flex:none;display:flex;align-items:center;justify-content:center;width:150px;height:58px;border-radius:12px;background:#fff;color:#050807;font-weight:900;font-size:19px;letter-spacing:-.8px;box-shadow:inset 0 -4px 0 var(--accent);padding:8px 12px;gap:8px}.brand-symbol{width:27px;height:27px;flex:none}.brandmark span{white-space:nowrap}.brandmark b{color:#059669}.brandcopy h1{margin:0 0 5px;font-size:1.42rem;letter-spacing:.2px}.brandcopy p{margin:0;color:#d1fae5;font-size:.94rem}
+main{max-width:1100px;margin:18px auto;padding:0 12px 30px}.notice{background:#ecfdf5;border:1px solid #a7f3d0;padding:12px;border-radius:10px;margin-bottom:14px;line-height:1.4}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.tab{border:1px solid var(--line);background:white;color:var(--brand);border-radius:9px;padding:10px 13px;font-weight:700;cursor:pointer}.tab.active{background:var(--brand);border-color:var(--brand);color:white}
+.panel{display:none;background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #173b5010}.panel.active{display:block}h2{margin:0 0 14px;font-size:1.2rem;color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}label{font-size:.9rem;font-weight:700;color:#2e4050}input,select{font:inherit;border:1px solid #c5d2dc;border-radius:8px;padding:11px;width:100%;background:white}input:focus,select:focus{outline:2px solid #6ee7b7;border-color:var(--brand2)}
+button,.btn{font:inherit;border:0;border-radius:8px;padding:11px 14px;background:var(--brand2);color:white;font-weight:700;cursor:pointer;transition:filter .15s}button:hover{filter:brightness(.94)}.secondary{background:#e7eee9;color:#17251e}.danger{background:#b42318}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.muted{color:#5b6c79;font-size:.9rem}.status{margin-top:10px;min-height:1.2em;color:#047857;font-size:.92rem;overflow-wrap:anywhere}.table-wrap{overflow:auto;margin-top:14px}table{border-collapse:collapse;width:100%;min-width:620px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e5e9ef;font-size:.9rem}th{background:#e7f4ec;color:var(--brand)}.pill{display:inline-block;background:#d1fae5;color:#065f46;padding:4px 8px;border-radius:999px;font-size:.8rem}
+#reader{width:100%;max-width:520px;margin-top:12px}#scannerVideo{display:block;width:100%;max-width:520px;min-height:220px;max-height:62vh;background:#07130e;border:2px solid #059669;border-radius:10px;object-fit:cover}#reader video{max-width:100%}.barcode-card{border:1px dashed #aab5c3;padding:12px;border-radius:8px;display:inline-block;margin:8px;background:white;color:#111;text-align:center;break-inside:avoid}.barcode-card svg{max-width:260px;height:auto}.barcode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+small{display:block;color:#667085;margin-top:5px}
+@media(max-width:520px){.brandmark{width:124px;height:50px;font-size:16px;gap:5px;padding:6px 8px}.brand-symbol{width:23px;height:23px}.brandcopy h1{font-size:1.05rem}.brandcopy p{font-size:.82rem}}
+@media print{body{background:white}header,nav,.notice,.no-print,.panel:not(#labelsPanel),#labelsPanel h2,#labelsPanel .muted{display:none!important}main{margin:0;padding:0;max-width:none}#labelsPanel{display:block!important;border:0;padding:0}.barcode-grid{display:block}.barcode-card{width:48%;margin:1%;height:125px}.barcode-card svg{max-height:65px}}
+</style>
+</head>
+<body>
+<header><div class="brandbar"><div class="brandmark" aria-label="CapTax-A, marca tipográfica de la aplicación"><svg class="brand-symbol" viewBox="0 0 32 32" role="img" aria-label="símbolo verde"><path d="M5 24V8h5v11h6v5H5Z" fill="#059669"/><path d="M18 8h9v5h-9zM18 16h9v8h-9z" fill="#111827"/><path d="M13 8h3v16h-3z" fill="#10b981"/></svg><span>CapTax-<b>A</b></span></div><div class="brandcopy"><h1>Inventario físico · CapTax-A</h1><p>Control de productos, conteo físico y códigos de barras</p></div></div></header>
+<main>
+  <div class="notice"><strong>Versión de prueba:</strong> los datos se guardan en esta computadora o celular, dentro de este navegador. No se sincronizan entre dispositivos. Exporta copias de seguridad con frecuencia. Las bibliotecas de códigos de barras, escáner y Excel necesitan internet.</div>
+  <nav class="no-print"><button class="tab active" data-tab="productsPanel">Productos</button><button class="tab" data-tab="countPanel">Conteo físico</button><button class="tab" data-tab="labelsPanel">Etiquetas</button><button class="tab" data-tab="dataPanel">Respaldo y Excel</button></nav>
+  <section id="productsPanel" class="panel active">
+    <h2>1. Catálogo de productos</h2><div class="grid">
+      <div class="field"><label for="sku">Código interno / SKU *</label><input id="sku" placeholder="Ej. PRE001" maxlength="40"></div>
+      <div class="field"><label for="productName">Nombre del producto *</label><input id="productName" placeholder="Ej. Preforma PET 35.7 g"></div>
+      <div class="field"><label for="category">Categoría (opcional)</label><input id="category" placeholder="Ej. Preformas"></div>
+      <div class="field"><label for="location">Ubicación (opcional)</label><input id="location" placeholder="Ej. Rack A-01"></div>
+    </div>
+    <div class="actions"><button id="saveProduct">Guardar producto</button><button class="secondary" id="clearProduct">Limpiar</button><button class="secondary" id="demoData">Cargar 5 productos de ejemplo</button></div>
+    <p class="muted">El SKU será el valor del código de barras. Usa un código distinto para cada producto.</p><div id="productStatus" class="status" role="status"></div>
+    <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Producto</th><th>Categoría</th><th>Ubicación</th><th>Acciones</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+  </section>
+  <section id="countPanel" class="panel">
+    <h2>2. Conteo físico</h2><p class="muted">Puedes buscar el SKU o escanear la etiqueta con la cámara. Luego escribe la cantidad encontrada físicamente.</p>
+    <div class="grid"><div class="field"><label for="scanSku">Código / SKU</label><input id="scanSku" placeholder="Escribe o escanea un SKU"></div><div class="field"><label for="physicalQty">Cantidad física *</label><input id="physicalQty" type="number" min="0" step="1" placeholder="Ej. 125"></div></div>
+    <div class="actions no-print"><button id="findProduct">Buscar producto</button><button id="startScanner">Activar cámara y escanear</button><button class="secondary" id="stopScanner">Detener cámara</button><button id="saveCount">Guardar conteo</button></div>
+    <div id="reader" class="no-print"><video id="scannerVideo" playsinline muted></video></div><p id="selectedProduct" class="pill">Ningún producto seleccionado</p><div id="countStatus" class="status" role="status"></div>
+    <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Producto</th><th>Cantidad física</th><th>Fecha del conteo</th></tr></thead><tbody id="countsTable"></tbody></table></div>
+  </section>
+  <section id="labelsPanel" class="panel"><h2>3. Códigos de barras para imprimir</h2><p class="muted no-print">Se genera una etiqueta por producto registrado. Imprime en papel adhesivo o papel normal y pega la etiqueta de forma segura y legible.</p><div class="actions no-print"><button id="makeLabels">Generar etiquetas</button><button class="secondary" id="printLabels">Imprimir etiquetas</button></div><div id="labelsStatus" class="status no-print" role="status"></div><div id="labelsGrid" class="barcode-grid"></div></section>
+  <section id="dataPanel" class="panel"><h2>4. Respaldo y exportación</h2><p>Descarga los datos para conservar una copia o revisarlos en Excel. El archivo Excel contiene hojas de productos y conteo físico.</p><div class="actions"><button id="exportExcel">Exportar a Excel (.xlsx)</button><button class="secondary" id="exportJson">Respaldo completo (.json)</button></div><div class="field" style="margin-top:16px"><label for="importJson">Restaurar respaldo JSON</label><input id="importJson" type="file" accept=".json,application/json"></div><div class="actions"><button class="secondary" id="importButton">Importar respaldo seleccionado</button></div><p id="dataStatus" class="status" role="status"></p><p class="muted">No importes archivos que no reconozcas: pueden sobrescribir tus productos y conteos actuales.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const DB_NAME = "InventarioMovilDB", DB_VERSION = 1;
+  let db, selectedSku = "", scannerControls = null, scannerReader = null, scannerBusy = false, scannerProcessing = false;
+  const $ = id => document.getElementById(id);
+
+  // Carga ZXing desde varios CDN y admite tanto @zxing/browser como @zxing/library.
+  function getZXingReader() {
+    return window.ZXingBrowser?.BrowserMultiFormatReader || window.ZXing?.BrowserMultiFormatReader || null;
+  }
+  function loadZXing() {
+    if (getZXingReader()) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const urls = [
+        "https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/index.min.js",
+        "https://unpkg.com/@zxing/browser@0.1.5/umd/index.min.js",
+        "https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js",
+        "https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js"
+      ];
+      let index = 0;
+      const tryNext = () => {
+        if (getZXingReader()) return resolve();
+        if (index >= urls.length) return reject(new Error("No se pudo descargar ZXing desde los CDN. Verifica internet o si la red bloquea estos servidores."));
+        const script = document.createElement("script");
+        script.src = urls[index++];
+        script.async = true;
+        script.onload = () => getZXingReader() ? resolve() : tryNext();
+        script.onerror = () => { script.remove(); tryNext(); };
+        document.head.appendChild(script);
+      };
+      tryNext();
+    });
+  }
+
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) return reject(new Error("Este navegador no permite usar la base de datos local."));
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      request.onupgradeneeded = event => {
+        const database = event.target.result;
+        if (!database.objectStoreNames.contains("products")) database.createObjectStore("products", {keyPath:"sku"});
+        if (!database.objectStoreNames.contains("counts")) database.createObjectStore("counts", {keyPath:"sku"});
+      };
+      request.onsuccess = () => { db = request.result; resolve(db); };
+      request.onerror = () => reject(request.error);
+    });
+  }
+  function all(storeName) { return new Promise((resolve,reject) => { const req=db.transaction(storeName,"readonly").objectStore(storeName).getAll(); req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }
+  function getOne(storeName,key) { return new Promise((resolve,reject) => { const req=db.transaction(storeName,"readonly").objectStore(storeName).get(key); req.onsuccess=()=>resolve(req.result||null); req.onerror=()=>reject(req.error); }); }
+  function put(storeName,value) { return new Promise((resolve,reject) => { const tx=db.transaction(storeName,"readwrite"); tx.objectStore(storeName).put(value); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+  function remove(storeName,key) { return new Promise((resolve,reject) => { const tx=db.transaction(storeName,"readwrite"); tx.objectStore(storeName).delete(key); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+  function safeText(value) { return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function setStatus(id,message,error=false) { $(id).textContent=message; $(id).style.color=error?"#b42318":"#17633b"; }
+  function activateTab(id) { document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id)); document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id)); if(id==="labelsPanel") renderLabels().catch(e=>setStatus("labelsStatus",e.message,true)); }
+  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>activateTab(b.dataset.tab)));
+  function clearProductForm() { ["sku","productName","category","location"].forEach(id=>$(id).value=""); $("sku").focus(); }
+
+  async function renderProducts() {
+    const products=(await all("products")).sort((a,b)=>a.sku.localeCompare(b.sku));
+    $("productsTable").innerHTML=products.map(p=>`<tr><td>${safeText(p.sku)}</td><td>${safeText(p.name)}</td><td>${safeText(p.category)}</td><td>${safeText(p.location)}</td><td><button class="secondary" data-edit="${safeText(p.sku)}">Editar</button> <button class="danger" data-delete="${safeText(p.sku)}">Eliminar</button></td></tr>`).join("");
+    $("productsTable").querySelectorAll("[data-edit]").forEach(btn=>btn.addEventListener("click",async()=>{const p=await getOne("products",btn.dataset.edit);if(!p)return;$("sku").value=p.sku;$("sku").disabled=true;$("productName").value=p.name;$("category").value=p.category||"";$("location").value=p.location||"";$("saveProduct").textContent="Guardar cambios";window.scrollTo({top:0,behavior:"smooth"});}));
+    $("productsTable").querySelectorAll("[data-delete]").forEach(btn=>btn.addEventListener("click",async()=>{const sku=btn.dataset.delete;if(!confirm(`¿Eliminar ${sku}? También se eliminará su conteo guardado.`))return;await remove("products",sku);await remove("counts",sku);if(selectedSku===sku){selectedSku="";$("selectedProduct").textContent="Ningún producto seleccionado";}await refreshAll();setStatus("productStatus","Producto eliminado.");}));
+  }
+  async function saveProduct() {
+    const sku=$("sku").value.trim().toUpperCase(), name=$("productName").value.trim(), category=$("category").value.trim(), location=$("location").value.trim();
+    if(!sku||!name)return setStatus("productStatus","Completa el código SKU y el nombre.",true);
+    if(!/^[A-Z0-9._-]+$/.test(sku))return setStatus("productStatus","Usa en el SKU solo letras, números, punto, guion o guion bajo; sin espacios.",true);
+    const editing=$("sku").disabled;
+    if(!editing&&await getOne("products",sku))return setStatus("productStatus","Ese SKU ya existe. Usa un código único.",true);
+    await put("products",{sku,name,category,location,updatedAt:new Date().toISOString()});
+    $("sku").disabled=false;$("saveProduct").textContent="Guardar producto";clearProductForm();await refreshAll();setStatus("productStatus",editing?"Cambios guardados.":"Producto registrado correctamente.");
+  }
+  $("saveProduct").addEventListener("click",()=>saveProduct().catch(e=>setStatus("productStatus","Error al guardar: "+e.message,true)));
+  $("clearProduct").addEventListener("click",()=>{$("sku").disabled=false;$("saveProduct").textContent="Guardar producto";clearProductForm();setStatus("productStatus","");});
+  $("demoData").addEventListener("click",async()=>{const demo=[{sku:"PRE001",name:"Preforma PET 35.7 g",category:"Preformas",location:"Rack A-01"},{sku:"TAP001",name:"Tapa plástica 28 mm",category:"Tapas",location:"Rack A-02"},{sku:"BOT001",name:"Botella PET 500 ml",category:"Botellas",location:"Rack B-01"},{sku:"ASA001",name:"Asa plástica",category:"Asas",location:"Rack B-02"},{sku:"GAL001",name:"Galonera plástica 3.8 L",category:"Galoneras",location:"Rack C-01"}];let added=0;for(const p of demo)if(!(await getOne("products",p.sku))){await put("products",{...p,updatedAt:new Date().toISOString()});added++;}await refreshAll();setStatus("productStatus",`Ejemplos listos. Se agregaron ${added}; los que ya existían se conservaron.`);});
+
+  async function selectProduct(sku) {
+    sku=sku.trim().toUpperCase();const p=await getOne("products",sku);
+    if(!p){selectedSku="";$("selectedProduct").textContent="No se encontró ese SKU. Regístralo primero en Productos.";setStatus("countStatus","No existe un producto con ese código.",true);return false;}
+    selectedSku=sku;$("scanSku").value=sku;$("selectedProduct").textContent=`${p.sku} — ${p.name}`;const oldCount=await getOne("counts",sku);$("physicalQty").value=oldCount?oldCount.quantity:"";setStatus("countStatus",oldCount?"Este producto ya tiene un conteo. Al guardar, lo actualizarás.":"Producto listo para contar.");return true;
+  }
+  $("findProduct").addEventListener("click",()=>selectProduct($("scanSku").value).catch(e=>setStatus("countStatus",e.message,true)));
+  $("scanSku").addEventListener("keydown",e=>{if(e.key==="Enter")selectProduct($("scanSku").value);});
+  $("saveCount").addEventListener("click",async()=>{if(!selectedSku)return setStatus("countStatus","Busca o escanea un producto primero.",true);const raw=$("physicalQty").value,quantity=Number(raw);if(raw===""||!Number.isFinite(quantity)||quantity<0||!Number.isInteger(quantity))return setStatus("countStatus","Ingresa una cantidad entera igual o mayor que cero.",true);const existing=await getOne("counts",selectedSku);await put("counts",{sku:selectedSku,quantity,countedAt:new Date().toISOString(),createdAt:existing?.createdAt||new Date().toISOString()});await renderCounts();setStatus("countStatus",`Conteo guardado: ${selectedSku} = ${quantity}.`);$("scanSku").value="";$("physicalQty").value="";selectedSku="";$("selectedProduct").textContent="Ningún producto seleccionado";});
+  async function renderCounts(){const [products,counts]=await Promise.all([all("products"),all("counts")]);const pmap=new Map(products.map(p=>[p.sku,p]));counts.sort((a,b)=>a.sku.localeCompare(b.sku));$("countsTable").innerHTML=counts.map(c=>`<tr><td>${safeText(c.sku)}</td><td>${safeText(pmap.get(c.sku)?.name||"Producto eliminado")}</td><td>${c.quantity}</td><td>${safeText(new Date(c.countedAt).toLocaleString("es-PE"))}</td></tr>`).join("");}
+
+  async function stopScanner() {
+    if(scannerControls){try{scannerControls.stop();}catch(e){console.warn("No se pudo detener el control del lector:",e);}scannerControls=null;}
+    if(scannerReader&&typeof scannerReader.reset==="function"){try{scannerReader.reset();}catch(e){console.warn(e);}scannerReader=null;}
+    const video=$("scannerVideo");if(video){if(video.srcObject)video.srcObject.getTracks().forEach(track=>track.stop());video.srcObject=null;try{video.pause();}catch(e){}}
+    scannerBusy=false;
+    scannerProcessing=false;
+  }
+  $("stopScanner").addEventListener("click",async()=>{await stopScanner();setStatus("countStatus","Cámara detenida.");});
+  $("startScanner").addEventListener("click",async()=>{
+    if(scannerBusy)return;
+    scannerBusy=true;
+    try {
+      if(!window.isSecureContext)throw new Error("La cámara requiere HTTPS o localhost. Abre la aplicación publicada mediante https://.");
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error("Este navegador no ofrece acceso a la cámara en esta página. Abre el enlace con Chrome actualizado.");
+      setStatus("countStatus","Cargando el lector de códigos de barras...");
+      await loadZXing();
+      await stopScanner();
+      const video=$("scannerVideo");video.setAttribute("playsinline","");video.setAttribute("autoplay","");video.muted=true;
+      const Reader=getZXingReader();
+     if(!Reader) throw new Error("La biblioteca se descargó, pero no se encontró el lector de códigos compatible.");
+      scannerReader=new Reader();
+      setStatus("countStatus","Solicitando permiso para utilizar la cámara...");
+      const onBarcodeRead=async(result,err,controls)=>{
+        // El callback se ejecuta repetidamente. No lo bloquees con scannerBusy:
+        // esa variable solo controla el inicio del escáner.
+        if(!result||scannerProcessing)return;
+        const code=(result.getText()||"").trim();
+        if(!code)return;
+        scannerProcessing=true;
+        scannerControls=controls||scannerControls;
+        setStatus("countStatus","Código detectado: "+code+". Buscando producto...");
+        try{
+          await stopScanner();
+          $("scanSku").value=code;
+          const found=await selectProduct(code);
+          if(found){
+            setStatus("countStatus","¡Código leído! Producto seleccionado. Ingresa la cantidad física.");
+            $("physicalQty").focus();
+          }else{
+            setStatus("countStatus","Se leyó el código "+code+", pero no existe en el catálogo. Revisa el SKU o registra el producto.",true);
+          }
+        }catch(scanError){
+          setStatus("countStatus","Se leyó el código, pero no se pudo seleccionar el producto: "+scanError.message,true);
+        }finally{
+          scannerProcessing=false;
+        }
+      };
+      // Preferimos la cámara trasera y una resolución útil cuando la API lo admite.
+      if(typeof scannerReader.decodeFromConstraints==="function"){
+        try{
+          scannerControls=await scannerReader.decodeFromConstraints({
+            audio:false,
+            video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}
+          },video,onBarcodeRead);
+        }catch(cameraConfigError){
+          console.warn("Se usará la cámara predeterminada:",cameraConfigError);
+          scannerControls=await scannerReader.decodeFromVideoDevice(undefined,video,onBarcodeRead);
+        }
+      }else{
+        scannerControls=await scannerReader.decodeFromVideoDevice(undefined,video,onBarcodeRead);
+      }
+      scannerBusy=false;
+      setStatus("countStatus","Cámara activa. Enfoca el código con buena luz a unos 10–20 cm. La lectura es automática; no necesitas tomar una foto.");
+    } catch(error) {
+      scannerBusy=false;await stopScanner();let message=error.message||"Error desconocido.";
+      if(error.name==="NotAllowedError"||error.name==="PermissionDeniedError")message="Chrome bloqueó el acceso a la cámara. En los ajustes del sitio, permite Cámara y vuelve a intentarlo.";
+      else if(error.name==="NotFoundError")message="No se encontró una cámara disponible en el dispositivo.";
+      else if(error.name==="NotReadableError")message="La cámara está ocupada por otra aplicación. Cierra otras aplicaciones que la estén usando y vuelve a probar.";
+      else if(error.name==="OverconstrainedError")message="No se pudo iniciar la cámara con la configuración solicitada. Vuelve a intentarlo.";
+      setStatus("countStatus","No se pudo iniciar el escáner: "+message,true);console.error("Error del escáner:",error);
+    }
+  });
+
+  async function renderLabels(){const products=(await all("products")).sort((a,b)=>a.sku.localeCompare(b.sku));const grid=$("labelsGrid");grid.innerHTML="";if(!products.length){setStatus("labelsStatus","Registra productos antes de generar etiquetas.",true);return;}if(!window.JsBarcode){setStatus("labelsStatus","No se cargó JsBarcode. Comprueba tu conexión a internet.",true);return;}for(const p of products){const card=document.createElement("div");card.className="barcode-card";const title=document.createElement("strong");title.textContent=p.name;const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");const code=document.createElement("div");code.textContent=p.sku;card.append(title,svg,code);grid.append(card);try{JsBarcode(svg,p.sku,{format:"CODE128",displayValue:false,margin:4,height:55,width:1.6});}catch{svg.remove();code.textContent+=" (código no válido)";}}setStatus("labelsStatus",`Se generaron ${products.length} etiquetas. Usa Imprimir etiquetas.`);}
+  $("makeLabels").addEventListener("click",()=>renderLabels().catch(e=>setStatus("labelsStatus",e.message,true)));
+  $("printLabels").addEventListener("click",async()=>{await renderLabels();window.print();});
+  function downloadBlob(blob,filename){const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  $("exportExcel").addEventListener("click",async()=>{if(!window.XLSX)return setStatus("dataStatus","No se cargó la biblioteca de Excel. Verifica internet.",true);const [products,counts]=await Promise.all([all("products"),all("counts")]);const pmap=new Map(products.map(p=>[p.sku,p]));const productRows=products.map(p=>({SKU:p.sku,Producto:p.name,Categoria:p.category||"",Ubicacion:p.location||"",Actualizado:p.updatedAt||""}));const countRows=counts.map(c=>({SKU:c.sku,Producto:pmap.get(c.sku)?.name||"",CantidadFisica:c.quantity,FechaConteo:c.countedAt}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(productRows),"Productos");XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(countRows),"Conteo fisico");XLSX.writeFile(wb,"Inventario_"+new Date().toISOString().slice(0,10)+".xlsx");setStatus("dataStatus","Excel descargado correctamente.");});
+  $("exportJson").addEventListener("click",async()=>{const payload={app:"InventarioMovilDB",version:1,exportedAt:new Date().toISOString(),products:await all("products"),counts:await all("counts")};downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}),"respaldo_inventario_"+new Date().toISOString().slice(0,10)+".json");setStatus("dataStatus","Respaldo JSON descargado.");});
+  $("importButton").addEventListener("click",async()=>{const file=$("importJson").files[0];if(!file)return setStatus("dataStatus","Selecciona primero un archivo JSON.",true);if(!confirm("Importar reemplazará los productos y conteos actuales. ¿Deseas continuar?"))return;try{const data=JSON.parse(await file.text());if(!Array.isArray(data.products)||!Array.isArray(data.counts))throw new Error("El archivo no tiene el formato esperado.");const tx=db.transaction(["products","counts"],"readwrite");tx.objectStore("products").clear();tx.objectStore("counts").clear();data.products.forEach(p=>tx.objectStore("products").put(p));data.counts.forEach(c=>tx.objectStore("counts").put(c));tx.oncomplete=async()=>{await refreshAll();setStatus("dataStatus","Respaldo restaurado correctamente.");};tx.onerror=()=>setStatus("dataStatus","No se pudo restaurar el respaldo.",true);}catch(e){setStatus("dataStatus","Error al importar: "+e.message,true);}});
+  async function refreshAll(){await Promise.all([renderProducts(),renderCounts()]);}
+  openDB().then(refreshAll).catch(e=>alert("No se pudo crear/abrir la base de datos local: "+e.message));
+})();
+</script>
+</body>
+</html>
