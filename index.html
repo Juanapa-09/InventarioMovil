@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventario físico | CapTax-A</title>
+<style>
+:root{font-family:Inter,Arial,Helvetica,sans-serif;color:#202a36;background:#f4f7f5;--brand:#064e3b;--brand2:#059669;--accent:#10b981;--line:#d6e3dc}
+*{box-sizing:border-box}body{margin:0}header{background:linear-gradient(115deg,#050807,#064e3b);color:white;padding:22px 16px;border-bottom:4px solid var(--accent);box-shadow:0 3px 14px #052e1b20}
+.brandbar{max-width:1100px;margin:auto;display:flex;align-items:center;gap:14px}.brandmark{flex:none;display:flex;align-items:center;justify-content:center;width:150px;height:58px;border-radius:12px;background:#fff;color:#050807;font-weight:900;font-size:19px;letter-spacing:-.8px;box-shadow:inset 0 -4px 0 var(--accent);padding:8px 12px;gap:8px}.brand-symbol{width:27px;height:27px;flex:none}.brandmark span{white-space:nowrap}.brandmark.official-logo{width:164px;height:72px;padding:4px;background:#fff;box-shadow:none}.brandmark.official-logo img{width:100%;height:100%;object-fit:contain;display:block}.brandmark b{color:#059669}.brandcopy h1{margin:0 0 5px;font-size:1.42rem;letter-spacing:.2px}.brandcopy p{margin:0;color:#d1fae5;font-size:.94rem}
+main{max-width:1100px;margin:18px auto;padding:0 12px 30px}.notice{background:#ecfdf5;border:1px solid #a7f3d0;padding:12px;border-radius:10px;margin-bottom:14px;line-height:1.4}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}.tab{border:1px solid var(--line);background:white;color:var(--brand);border-radius:9px;padding:10px 13px;font-weight:700;cursor:pointer}.tab.active{background:var(--brand);border-color:var(--brand);color:white}
+.panel{display:none;background:white;border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #173b5010}.panel.active{display:block}h2{margin:0 0 14px;font-size:1.2rem;color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.field{display:flex;flex-direction:column;gap:6px}label{font-size:.9rem;font-weight:700;color:#2e4050}input,select{font:inherit;border:1px solid #c5d2dc;border-radius:8px;padding:11px;width:100%;background:white}input:focus,select:focus{outline:2px solid #6ee7b7;border-color:var(--brand2)}
+button,.btn{font:inherit;border:0;border-radius:8px;padding:11px 14px;background:var(--brand2);color:white;font-weight:700;cursor:pointer;transition:filter .15s}button:hover{filter:brightness(.94)}.secondary{background:#e7eee9;color:#17251e}.danger{background:#b42318}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.muted{color:#5b6c79;font-size:.9rem}.status{margin-top:10px;min-height:1.2em;color:#047857;font-size:.92rem;overflow-wrap:anywhere}.table-wrap{overflow:auto;margin-top:14px}table{border-collapse:collapse;width:100%;min-width:620px}th,td{text-align:left;padding:10px;border-bottom:1px solid #e5e9ef;font-size:.9rem}th{background:#e7f4ec;color:var(--brand)}.pill{display:inline-block;background:#d1fae5;color:#065f46;padding:4px 8px;border-radius:999px;font-size:.8rem}
+#reader{width:100%;max-width:520px;margin-top:12px}#scannerVideo{display:block;width:100%;max-width:520px;min-height:220px;max-height:62vh;background:#07130e;border:2px solid #059669;border-radius:10px;object-fit:cover}#reader video{max-width:100%}.barcode-card{border:1px dashed #aab5c3;padding:12px;border-radius:8px;display:inline-block;margin:8px;background:white;color:#111;text-align:center;break-inside:avoid}.barcode-card svg{max-width:260px;height:auto}.barcode-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px}
+small{display:block;color:#667085;margin-top:5px}
+@media(max-width:520px){.brandmark{width:124px;height:50px;font-size:16px;gap:5px;padding:6px 8px}.brand-symbol{width:23px;height:23px}.brandmark.official-logo{width:128px;height:58px;padding:3px}.brandcopy h1{font-size:1.05rem}.brandcopy p{font-size:.82rem}}
+@media print{body{background:white}header,nav,.notice,.no-print,.panel:not(#labelsPanel),#labelsPanel h2,#labelsPanel .muted{display:none!important}main{margin:0;padding:0;max-width:none}#labelsPanel{display:block!important;border:0;padding:0}.barcode-grid{display:block}.barcode-card{width:48%;margin:1%;height:125px}.barcode-card svg{max-height:65px}}
+</style>
+</head>
+<body>
+<header><div class="brandbar"><div class="brandmark official-logo" aria-label="Logotipo oficial de CapTax-A"><img src="data:image/jpeg;base64,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" alt="Logo oficial de CapTax-A"></div><div class="brandcopy"><h1>Inventario físico · CapTax-A</h1><p>Control de productos, conteo físico y códigos de barras</p></div></div></header>
+<main>
+  <div class="notice"><strong>Versión de prueba:</strong> los datos se guardan en esta computadora o celular, dentro de este navegador. No se sincronizan entre dispositivos. Exporta copias de seguridad con frecuencia. Las bibliotecas de códigos de barras, escáner y Excel necesitan internet.</div>
+  <nav class="no-print"><button class="tab active" data-tab="productsPanel">Productos</button><button class="tab" data-tab="countPanel">Conteo físico</button><button class="tab" data-tab="labelsPanel">Etiquetas</button><button class="tab" data-tab="dataPanel">Respaldo y Excel</button></nav>
+  <section id="productsPanel" class="panel active">
+    <h2>1. Catálogo de productos</h2><div class="grid">
+      <div class="field"><label for="sku">Código interno / SKU *</label><input id="sku" placeholder="Ej. PRE001" maxlength="40"></div>
+      <div class="field"><label for="productName">Nombre del producto *</label><input id="productName" placeholder="Ej. Preforma PET 35.7 g"></div>
+      <div class="field"><label for="category">Categoría (opcional)</label><input id="category" placeholder="Ej. Preformas"></div>
+      <div class="field"><label for="location">Ubicación (opcional)</label><input id="location" placeholder="Ej. Rack A-01"></div>
+    </div>
+    <div class="actions"><button id="saveProduct">Guardar producto</button><button class="secondary" id="clearProduct">Limpiar</button><button class="secondary" id="demoData">Cargar 5 productos de ejemplo</button></div>
+    <p class="muted">El SKU será el valor del código de barras. Usa un código distinto para cada producto.</p><div id="productStatus" class="status" role="status"></div>
+    <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Producto</th><th>Categoría</th><th>Ubicación</th><th>Acciones</th></tr></thead><tbody id="productsTable"></tbody></table></div>
+  </section>
+  <section id="countPanel" class="panel">
+    <h2>2. Conteo físico</h2><p class="muted">Puedes buscar el SKU o escanear la etiqueta con la cámara. Luego escribe la cantidad encontrada físicamente.</p>
+    <div class="grid"><div class="field"><label for="scanSku">Código / SKU</label><input id="scanSku" placeholder="Escribe o escanea un SKU"></div><div class="field"><label for="physicalQty">Cantidad física *</label><input id="physicalQty" type="number" min="0" step="1" placeholder="Ej. 125"></div></div>
+    <div class="actions no-print"><button id="findProduct">Buscar producto</button><button id="startScanner">Activar cámara y escanear</button><button class="secondary" id="stopScanner">Detener cámara</button><button id="saveCount">Guardar conteo</button><button class="secondary" id="clearCurrentCount">Limpiar conteo actual</button><button class="danger" id="resetAllCounts">Reiniciar todos los conteos</button></div>
+    <div id="reader" class="no-print"><video id="scannerVideo" playsinline muted></video></div><p id="selectedProduct" class="pill">Ningún producto seleccionado</p><div id="countStatus" class="status" role="status"></div>
+    <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Producto</th><th>Cantidad física</th><th>Fecha del conteo</th></tr></thead><tbody id="countsTable"></tbody></table></div>
+  </section>
+  <section id="labelsPanel" class="panel"><h2>3. Códigos de barras para imprimir</h2><p class="muted no-print">Se genera una etiqueta por producto registrado. Imprime en papel adhesivo o papel normal y pega la etiqueta de forma segura y legible.</p><div class="actions no-print"><button id="makeLabels">Generar etiquetas</button><button class="secondary" id="printLabels">Imprimir etiquetas</button></div><div id="labelsStatus" class="status no-print" role="status"></div><div id="labelsGrid" class="barcode-grid"></div></section>
+  <section id="dataPanel" class="panel"><h2>4. Respaldo y exportación</h2><p>Descarga los datos para conservar una copia o revisarlos en Excel. El archivo Excel contiene hojas de productos y conteo físico.</p><div class="actions"><button id="exportExcel">Exportar a Excel (.xlsx)</button><button class="secondary" id="exportJson">Respaldo completo (.json)</button></div><div class="field" style="margin-top:16px"><label for="importJson">Restaurar respaldo JSON</label><input id="importJson" type="file" accept=".json,application/json"></div><div class="actions"><button class="secondary" id="importButton">Importar respaldo seleccionado</button></div><p id="dataStatus" class="status" role="status"></p><p class="muted">No importes archivos que no reconozcas: pueden sobrescribir tus productos y conteos actuales.</p></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+(() => {
+  "use strict";
+  const DB_NAME = "InventarioMovilDB", DB_VERSION = 2;
+  let db, selectedSku = "", scannerControls = null, scannerReader = null, scannerBusy = false, scannerProcessing = false;
+  let currentSessionId = localStorage.getItem("inventarioCurrentSessionId") || ("SES-" + Date.now());
+  localStorage.setItem("inventarioCurrentSessionId", currentSessionId);
+  const $ = id => document.getElementById(id);
+
+  // Carga ZXing desde varios CDN y admite tanto @zxing/browser como @zxing/library.
+  function getZXingReader() {
+    return window.ZXingBrowser?.BrowserMultiFormatReader || window.ZXing?.BrowserMultiFormatReader || null;
+  }
+  function loadZXing() {
+    if (getZXingReader()) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const urls = [
+        "https://cdn.jsdelivr.net/npm/@zxing/browser@0.1.5/umd/index.min.js",
+        "https://unpkg.com/@zxing/browser@0.1.5/umd/index.min.js",
+        "https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js",
+        "https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js"
+      ];
+      let index = 0;
+      const tryNext = () => {
+        if (getZXingReader()) return resolve();
+        if (index >= urls.length) return reject(new Error("No se pudo descargar ZXing desde los CDN. Verifica internet o si la red bloquea estos servidores."));
+        const script = document.createElement("script");
+        script.src = urls[index++];
+        script.async = true;
+        script.onload = () => getZXingReader() ? resolve() : tryNext();
+        script.onerror = () => { script.remove(); tryNext(); };
+        document.head.appendChild(script);
+      };
+      tryNext();
+    });
+  }
+
+  function openDB() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) return reject(new Error("Este navegador no permite usar la base de datos local."));
+      const request = indexedDB.open(DB_NAME, DB_VERSION);
+      request.onupgradeneeded = event => {
+        const database = event.target.result;
+        const tx = event.target.transaction;
+        if (!database.objectStoreNames.contains("products")) database.createObjectStore("products", {keyPath:"sku"});
+        if (!database.objectStoreNames.contains("counts")) database.createObjectStore("counts", {keyPath:"sku"});
+        if (!database.objectStoreNames.contains("countHistory")) {
+          const history = database.createObjectStore("countHistory", {keyPath:"id", autoIncrement:true});
+          if (event.oldVersion < 2 && database.objectStoreNames.contains("counts")) {
+            const oldCounts = tx.objectStore("counts").getAll();
+            oldCounts.onsuccess = () => oldCounts.result.forEach(c => history.add({...c, archivedAt:new Date().toISOString(), source:"migration"}));
+          }
+        }
+      };
+      request.onsuccess = () => { db = request.result; resolve(db); };
+      request.onerror = () => reject(request.error);
+    });
+  }
+  function all(storeName) { return new Promise((resolve,reject) => { const req=db.transaction(storeName,"readonly").objectStore(storeName).getAll(); req.onsuccess=()=>resolve(req.result); req.onerror=()=>reject(req.error); }); }
+  function getOne(storeName,key) { return new Promise((resolve,reject) => { const req=db.transaction(storeName,"readonly").objectStore(storeName).get(key); req.onsuccess=()=>resolve(req.result||null); req.onerror=()=>reject(req.error); }); }
+  function put(storeName,value) { return new Promise((resolve,reject) => { const tx=db.transaction(storeName,"readwrite"); tx.objectStore(storeName).put(value); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+  function remove(storeName,key) { return new Promise((resolve,reject) => { const tx=db.transaction(storeName,"readwrite"); tx.objectStore(storeName).delete(key); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+  function addHistory(value) { return new Promise((resolve,reject) => { const tx=db.transaction("countHistory","readwrite"); tx.objectStore("countHistory").add(value); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+  function clearStore(name) { return new Promise((resolve,reject) => { const tx=db.transaction(name,"readwrite"); tx.objectStore(name).clear(); tx.oncomplete=()=>resolve(); tx.onerror=()=>reject(tx.error); }); }
+  function safeText(value) { return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function setStatus(id,message,error=false) { $(id).textContent=message; $(id).style.color=error?"#b42318":"#17633b"; }
+  function activateTab(id) { document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id)); document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===id)); if(id==="labelsPanel") renderLabels().catch(e=>setStatus("labelsStatus",e.message,true)); }
+  document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>activateTab(b.dataset.tab)));
+  function clearProductForm() { ["sku","productName","category","location"].forEach(id=>$(id).value=""); $("sku").focus(); }
+
+  async function renderProducts() {
+    const products=(await all("products")).sort((a,b)=>a.sku.localeCompare(b.sku));
+    $("productsTable").innerHTML=products.map(p=>`<tr><td>${safeText(p.sku)}</td><td>${safeText(p.name)}</td><td>${safeText(p.category)}</td><td>${safeText(p.location)}</td><td><button class="secondary" data-edit="${safeText(p.sku)}">Editar</button> <button class="danger" data-delete="${safeText(p.sku)}">Eliminar</button></td></tr>`).join("");
+    $("productsTable").querySelectorAll("[data-edit]").forEach(btn=>btn.addEventListener("click",async()=>{const p=await getOne("products",btn.dataset.edit);if(!p)return;$("sku").value=p.sku;$("sku").disabled=true;$("productName").value=p.name;$("category").value=p.category||"";$("location").value=p.location||"";$("saveProduct").textContent="Guardar cambios";window.scrollTo({top:0,behavior:"smooth"});}));
+    $("productsTable").querySelectorAll("[data-delete]").forEach(btn=>btn.addEventListener("click",async()=>{const sku=btn.dataset.delete;if(!confirm(`¿Eliminar ${sku}? También se eliminará su conteo guardado.`))return;await remove("products",sku);await remove("counts",sku);if(selectedSku===sku){selectedSku="";$("selectedProduct").textContent="Ningún producto seleccionado";}await refreshAll();setStatus("productStatus","Producto eliminado.");}));
+  }
+  async function saveProduct() {
+    const sku=$("sku").value.trim().toUpperCase(), name=$("productName").value.trim(), category=$("category").value.trim(), location=$("location").value.trim();
+    if(!sku||!name)return setStatus("productStatus","Completa el código SKU y el nombre.",true);
+    if(!/^[A-Z0-9._-]+$/.test(sku))return setStatus("productStatus","Usa en el SKU solo letras, números, punto, guion o guion bajo; sin espacios.",true);
+    const editing=$("sku").disabled;
+    if(!editing&&await getOne("products",sku))return setStatus("productStatus","Ese SKU ya existe. Usa un código único.",true);
+    await put("products",{sku,name,category,location,updatedAt:new Date().toISOString()});
+    $("sku").disabled=false;$("saveProduct").textContent="Guardar producto";clearProductForm();await refreshAll();setStatus("productStatus",editing?"Cambios guardados.":"Producto registrado correctamente.");
+  }
+  $("saveProduct").addEventListener("click",()=>saveProduct().catch(e=>setStatus("productStatus","Error al guardar: "+e.message,true)));
+  $("clearProduct").addEventListener("click",()=>{$("sku").disabled=false;$("saveProduct").textContent="Guardar producto";clearProductForm();setStatus("productStatus","");});
+  $("demoData").addEventListener("click",async()=>{const demo=[{sku:"PRE001",name:"Preforma PET 35.7 g",category:"Preformas",location:"Rack A-01"},{sku:"TAP001",name:"Tapa plástica 28 mm",category:"Tapas",location:"Rack A-02"},{sku:"BOT001",name:"Botella PET 500 ml",category:"Botellas",location:"Rack B-01"},{sku:"ASA001",name:"Asa plástica",category:"Asas",location:"Rack B-02"},{sku:"GAL001",name:"Galonera plástica 3.8 L",category:"Galoneras",location:"Rack C-01"}];let added=0;for(const p of demo)if(!(await getOne("products",p.sku))){await put("products",{...p,updatedAt:new Date().toISOString()});added++;}await refreshAll();setStatus("productStatus",`Ejemplos listos. Se agregaron ${added}; los que ya existían se conservaron.`);});
+
+  async function selectProduct(sku) {
+    sku=sku.trim().toUpperCase();const p=await getOne("products",sku);
+    if(!p){selectedSku="";$("selectedProduct").textContent="No se encontró ese SKU. Regístralo primero en Productos.";setStatus("countStatus","No existe un producto con ese código.",true);return false;}
+    selectedSku=sku;$("scanSku").value=sku;$("selectedProduct").textContent=`${p.sku} — ${p.name}`;const oldCount=await getOne("counts",sku);$("physicalQty").value=oldCount?oldCount.quantity:"";setStatus("countStatus",oldCount?"Este producto ya tiene un conteo. Al guardar, lo actualizarás.":"Producto listo para contar.");return true;
+  }
+  $("findProduct").addEventListener("click",()=>selectProduct($("scanSku").value).catch(e=>setStatus("countStatus",e.message,true)));
+  $("scanSku").addEventListener("keydown",e=>{if(e.key==="Enter")selectProduct($("scanSku").value);});
+  $("saveCount").addEventListener("click",async()=>{if(!selectedSku)return setStatus("countStatus","Busca o escanea un producto primero.",true);const raw=$("physicalQty").value,quantity=Number(raw);if(raw===""||!Number.isFinite(quantity)||quantity<0||!Number.isInteger(quantity))return setStatus("countStatus","Ingresa una cantidad entera igual o mayor que cero.",true);const existing=await getOne("counts",selectedSku);const countedAt=new Date().toISOString();const record={sku:selectedSku,quantity,countedAt,createdAt:existing?.createdAt||countedAt};await put("counts",record);await addHistory({...record,sessionId:currentSessionId,recordedAt:countedAt});await renderCounts();setStatus("countStatus",`Conteo guardado: ${selectedSku} = ${quantity}.`);$("scanSku").value="";$("physicalQty").value="";selectedSku="";$("selectedProduct").textContent="Ningún producto seleccionado";});
+  async function renderCounts(){const [products,counts]=await Promise.all([all("products"),all("counts")]);const pmap=new Map(products.map(p=>[p.sku,p]));counts.sort((a,b)=>a.sku.localeCompare(b.sku));$("countsTable").innerHTML=counts.map(c=>`<tr><td>${safeText(c.sku)}</td><td>${safeText(pmap.get(c.sku)?.name||"Producto eliminado")}</td><td>${c.quantity}</td><td>${safeText(new Date(c.countedAt).toLocaleString("es-PE"))}</td></tr>`).join("");}
+  async function clearCurrentCount(){
+    if(!confirm("¿Limpiar el conteo actual? Los registros de esta sesión se conservarán en el historial y el catálogo no cambiará."))return;
+    try{
+      const current=await all("counts"), archivedAt=new Date().toISOString();
+      for(const c of current) await addHistory({...c,sessionId:currentSessionId,archivedAt,source:"session-clear"});
+      await clearStore("counts");
+      currentSessionId="SES-"+Date.now();localStorage.setItem("inventarioCurrentSessionId",currentSessionId);
+      selectedSku="";$("scanSku").value="";$("physicalQty").value="";$("selectedProduct").textContent="Ningún producto seleccionado";
+      await renderCounts();setStatus("countStatus","Conteo actual limpiado. Los registros anteriores se conservaron en el historial.");
+    }catch(e){setStatus("countStatus","No se pudo limpiar el conteo actual: "+e.message,true);}
+  }
+  async function resetAllCounts(){
+    if(!confirm("Se eliminarán todos los conteos actuales y el historial. El catálogo de productos se conservará. ¿Continuar?"))return;
+    if(!confirm("Confirma que deseas eliminar TODOS los conteos. Esta acción no se puede deshacer."))return;
+    try{
+      await Promise.all([clearStore("counts"),clearStore("countHistory")]);
+      currentSessionId="SES-"+Date.now();localStorage.setItem("inventarioCurrentSessionId",currentSessionId);
+      selectedSku="";$("scanSku").value="";$("physicalQty").value="";$("selectedProduct").textContent="Ningún producto seleccionado";
+      await renderCounts();setStatus("countStatus","Todos los conteos e históricos fueron eliminados. El catálogo sigue intacto.");
+    }catch(e){setStatus("countStatus","No se pudieron reiniciar los conteos: "+e.message,true);}
+  }
+  $("clearCurrentCount").addEventListener("click",clearCurrentCount);
+  $("resetAllCounts").addEventListener("click",resetAllCounts);
+
+  async function stopScanner() {
+    if(scannerControls){try{scannerControls.stop();}catch(e){console.warn("No se pudo detener el control del lector:",e);}scannerControls=null;}
+    if(scannerReader&&typeof scannerReader.reset==="function"){try{scannerReader.reset();}catch(e){console.warn(e);}scannerReader=null;}
+    const video=$("scannerVideo");if(video){if(video.srcObject)video.srcObject.getTracks().forEach(track=>track.stop());video.srcObject=null;try{video.pause();}catch(e){}}
+    scannerBusy=false;
+    scannerProcessing=false;
+  }
+  $("stopScanner").addEventListener("click",async()=>{await stopScanner();setStatus("countStatus","Cámara detenida.");});
+  $("startScanner").addEventListener("click",async()=>{
+    if(scannerBusy)return;
+    scannerBusy=true;
+    try {
+      if(!window.isSecureContext)throw new Error("La cámara requiere HTTPS o localhost. Abre la aplicación publicada mediante https://.");
+      if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error("Este navegador no ofrece acceso a la cámara en esta página. Abre el enlace con Chrome actualizado.");
+      setStatus("countStatus","Cargando el lector de códigos de barras...");
+      await loadZXing();
+      await stopScanner();
+      const video=$("scannerVideo");video.setAttribute("playsinline","");video.setAttribute("autoplay","");video.muted=true;
+      const Reader=getZXingReader();
+     if(!Reader) throw new Error("La biblioteca se descargó, pero no se encontró el lector de códigos compatible.");
+      scannerReader=new Reader();
+      setStatus("countStatus","Solicitando permiso para utilizar la cámara...");
+      const onBarcodeRead=async(result,err,controls)=>{
+        // El callback se ejecuta repetidamente. No lo bloquees con scannerBusy:
+        // esa variable solo controla el inicio del escáner.
+        if(!result||scannerProcessing)return;
+        const code=(result.getText()||"").trim();
+        if(!code)return;
+        scannerProcessing=true;
+        scannerControls=controls||scannerControls;
+        setStatus("countStatus","Código detectado: "+code+". Buscando producto...");
+        try{
+          await stopScanner();
+          $("scanSku").value=code;
+          const found=await selectProduct(code);
+          if(found){
+            setStatus("countStatus","¡Código leído! Producto seleccionado. Ingresa la cantidad física.");
+            $("physicalQty").focus();
+          }else{
+            setStatus("countStatus","Se leyó el código "+code+", pero no existe en el catálogo. Revisa el SKU o registra el producto.",true);
+          }
+        }catch(scanError){
+          setStatus("countStatus","Se leyó el código, pero no se pudo seleccionar el producto: "+scanError.message,true);
+        }finally{
+          scannerProcessing=false;
+        }
+      };
+      // Preferimos la cámara trasera y una resolución útil cuando la API lo admite.
+      if(typeof scannerReader.decodeFromConstraints==="function"){
+        try{
+          scannerControls=await scannerReader.decodeFromConstraints({
+            audio:false,
+            video:{facingMode:{ideal:"environment"},width:{ideal:1280},height:{ideal:720}}
+          },video,onBarcodeRead);
+        }catch(cameraConfigError){
+          console.warn("Se usará la cámara predeterminada:",cameraConfigError);
+          scannerControls=await scannerReader.decodeFromVideoDevice(undefined,video,onBarcodeRead);
+        }
+      }else{
+        scannerControls=await scannerReader.decodeFromVideoDevice(undefined,video,onBarcodeRead);
+      }
+      scannerBusy=false;
+      setStatus("countStatus","Cámara activa. Enfoca el código con buena luz a unos 10–20 cm. La lectura es automática; no necesitas tomar una foto.");
+    } catch(error) {
+      scannerBusy=false;await stopScanner();let message=error.message||"Error desconocido.";
+      if(error.name==="NotAllowedError"||error.name==="PermissionDeniedError")message="Chrome bloqueó el acceso a la cámara. En los ajustes del sitio, permite Cámara y vuelve a intentarlo.";
+      else if(error.name==="NotFoundError")message="No se encontró una cámara disponible en el dispositivo.";
+      else if(error.name==="NotReadableError")message="La cámara está ocupada por otra aplicación. Cierra otras aplicaciones que la estén usando y vuelve a probar.";
+      else if(error.name==="OverconstrainedError")message="No se pudo iniciar la cámara con la configuración solicitada. Vuelve a intentarlo.";
+      setStatus("countStatus","No se pudo iniciar el escáner: "+message,true);console.error("Error del escáner:",error);
+    }
+  });
+
+  async function renderLabels(){const products=(await all("products")).sort((a,b)=>a.sku.localeCompare(b.sku));const grid=$("labelsGrid");grid.innerHTML="";if(!products.length){setStatus("labelsStatus","Registra productos antes de generar etiquetas.",true);return;}if(!window.JsBarcode){setStatus("labelsStatus","No se cargó JsBarcode. Comprueba tu conexión a internet.",true);return;}for(const p of products){const card=document.createElement("div");card.className="barcode-card";const title=document.createElement("strong");title.textContent=p.name;const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");const code=document.createElement("div");code.textContent=p.sku;card.append(title,svg,code);grid.append(card);try{JsBarcode(svg,p.sku,{format:"CODE128",displayValue:false,margin:4,height:55,width:1.6});}catch{svg.remove();code.textContent+=" (código no válido)";}}setStatus("labelsStatus",`Se generaron ${products.length} etiquetas. Usa Imprimir etiquetas.`);}
+  $("makeLabels").addEventListener("click",()=>renderLabels().catch(e=>setStatus("labelsStatus",e.message,true)));
+  $("printLabels").addEventListener("click",async()=>{await renderLabels();window.print();});
+  function downloadBlob(blob,filename){const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  $("exportExcel").addEventListener("click",async()=>{if(!window.XLSX)return setStatus("dataStatus","No se cargó la biblioteca de Excel. Verifica internet.",true);const [products,counts,history]=await Promise.all([all("products"),all("counts"),all("countHistory")]);const pmap=new Map(products.map(p=>[p.sku,p]));const productRows=products.map(p=>({SKU:p.sku,Producto:p.name,Categoria:p.category||"",Ubicacion:p.location||"",Actualizado:p.updatedAt||""}));const countRows=counts.map(c=>({SKU:c.sku,Producto:pmap.get(c.sku)?.name||"",CantidadFisica:c.quantity,FechaConteo:c.countedAt}));const historyRows=history.map(c=>({SKU:c.sku,Producto:pmap.get(c.sku)?.name||"",CantidadFisica:c.quantity,FechaConteo:c.countedAt,Sesion:c.sessionId||"",Archivado:c.archivedAt||""}));const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(productRows),"Productos");XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(countRows),"Conteo actual");XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(historyRows),"Historial");XLSX.writeFile(wb,"Inventario_"+new Date().toISOString().slice(0,10)+".xlsx");setStatus("dataStatus","Excel descargado correctamente.");});
+  $("exportJson").addEventListener("click",async()=>{const payload={app:"InventarioMovilDB",version:2,exportedAt:new Date().toISOString(),products:await all("products"),counts:await all("counts"),countHistory:await all("countHistory")};downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}),"respaldo_inventario_"+new Date().toISOString().slice(0,10)+".json");setStatus("dataStatus","Respaldo JSON descargado.");});
+  $("importButton").addEventListener("click",async()=>{const file=$("importJson").files[0];if(!file)return setStatus("dataStatus","Selecciona primero un archivo JSON.",true);if(!confirm("Importar reemplazará los productos y conteos actuales. ¿Deseas continuar?"))return;try{const data=JSON.parse(await file.text());if(!Array.isArray(data.products)||!Array.isArray(data.counts))throw new Error("El archivo no tiene el formato esperado.");const tx=db.transaction(["products","counts","countHistory"],"readwrite");tx.objectStore("products").clear();tx.objectStore("counts").clear();tx.objectStore("countHistory").clear();data.products.forEach(p=>tx.objectStore("products").put(p));data.counts.forEach(c=>tx.objectStore("counts").put(c));(Array.isArray(data.countHistory)?data.countHistory:[]).forEach(c=>{const item={...c};delete item.id;tx.objectStore("countHistory").add(item);});tx.oncomplete=async()=>{await refreshAll();setStatus("dataStatus","Respaldo restaurado correctamente.");};tx.onerror=()=>setStatus("dataStatus","No se pudo restaurar el respaldo.",true);}catch(e){setStatus("dataStatus","Error al importar: "+e.message,true);}});
+  async function refreshAll(){await Promise.all([renderProducts(),renderCounts()]);}
+  openDB().then(refreshAll).catch(e=>alert("No se pudo crear/abrir la base de datos local: "+e.message));
+})();
+</script>
+</body>
+</html>
